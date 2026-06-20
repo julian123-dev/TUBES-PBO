@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Member</title>
+</head>
+<body>
+
+    <h2>Profile Member</h2>
+
+    <p><strong>ID:</strong> <span th:text="${member.id}"></span></p>
+    <p><strong>Nama:</strong> <span th:text="${member.name}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${member.email}"></span></p>
+    <p><strong>No HP:</strong> <span th:text="${member.phone}"></span></p>
+    <p><strong>Status:</strong> <span th:text="${member.status}"></span></p>
+
+    <a th:href="@{/profile/{id}/edit(id=${member.id})}">Edit Profile</a>
+    &nbsp;|&nbsp;
+    <a th:href="@{/login}">Logout</a>
+
+</body>
+</html>
