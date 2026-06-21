@@ -3,41 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <title>Daftar Member</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f8;
+        }
+
+        nav {
+            padding: 20px 40px;
+            background-color: #1a1a2e;
+            color: white;
+        }
+
+        nav h2 {
+            font-size: 24px;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container h2 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: #1a1a2e;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #c73650;
+        }
+
+        .error-text {
+            color: #e94560;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #0f3460;
+        }
+    </style>
 </head>
 <body>
 
-    <h2>Form Pendaftaran Member</h2>
+    <nav>
+        <h2>SportSync</h2>
+    </nav>
 
-    <p style="color: red;" th:if="${error}" th:text="${error}"></p>
+    <div class="container">
+        <h2>Form Pendaftaran Member</h2>
 
-    <form th:action="@{/register}" th:object="${member}" method="post">
+        <p class="error-text" th:if="${error}" th:text="${error}"></p>
 
-        <label>Nama:</label><br>
-        <input type="text" th:field="*{name}" required><br><br>
+        <form th:action="@{/register}" th:object="${member}" method="post">
 
-        <label>Email:</label><br>
-        <input type="email" th:field="*{email}" required><br><br>
+            <label>Nama:</label>
+            <input type="text" th:field="*{name}" required>
 
-        <label>Password:</label><br>
-        <input type="password" th:field="*{password}" required><br><br>
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" required>
 
-        <label>No HP:</label><br>
-        <input type="text" th:field="*{phone}"><br><br>
+            <label>Password:</label>
+            <input type="password" th:field="*{password}" required>
 
-        <label>Jenis Kelamin:</label><br>
-        <select th:field="*{jenisKelamin}">
-            <option value="Laki-laki">Laki-laki</option>
-            <option value="Perempuan">Perempuan</option>
-        </select><br><br>
+            <label>No HP:</label>
+            <input type="text" th:field="*{phone}">
 
-        <label>Tanggal Lahir:</label><br>
-        <input type="date" th:field="*{tanggalLahir}"><br><br>
+            <label>Jenis Kelamin:</label>
+            <select th:field="*{jenisKelamin}">
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+            </select>
 
-        <button type="submit">Daftar</button>
+            <label>Tanggal Lahir:</label>
+            <input type="date" th:field="*{tanggalLahir}">
 
-    </form>
+            <button type="submit">Daftar</button>
 
-    <p>Sudah punya akun? <a th:href="@{/login}">Login di sini</a></p>
+        </form>
+
+        <p style="margin-top: 15px;">Sudah punya akun? <a th:href="@{/login}">Login di sini</a></p>
+    </div>
 
 </body>
 </html>

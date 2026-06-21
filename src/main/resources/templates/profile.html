@@ -3,23 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile Member</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f8;
+        }
+
+        nav {
+            padding: 20px 40px;
+            background-color: #1a1a2e;
+            color: white;
+        }
+
+        nav h2 {
+            font-size: 24px;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container h2 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+        }
+
+        .container p {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .container p strong {
+            color: #1a1a2e;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .actions a {
+            color: white;
+            background-color: #e94560;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .actions a:last-child {
+            background-color: #0f3460;
+        }
+    </style>
 </head>
 <body>
 
-    <h2>Profile Member</h2>
+    <nav>
+        <h2>SportSync</h2>
+    </nav>
 
-    <p><strong>ID:</strong> <span th:text="${member.id}"></span></p>
-    <p><strong>Nama:</strong> <span th:text="${member.name}"></span></p>
-    <p><strong>Email:</strong> <span th:text="${member.email}"></span></p>
-    <p><strong>No HP:</strong> <span th:text="${member.phone}"></span></p>
-    <p><strong>Jenis Kelamin:</strong> <span th:text="${member.jenisKelamin}"></span></p>
-    <p><strong>Tanggal Lahir:</strong> <span th:text="${member.tanggalLahir}"></span></p>
-    <p><strong>Umur:</strong> <span th:text="${member.umur}"></span> tahun</p>
-    <p><strong>Status:</strong> <span th:text="${member.status}"></span></p>
+    <div class="container">
+        <h2>Profile Member</h2>
 
-    <a th:href="@{/profile/{id}/edit(id=${member.id})}">Edit Profile</a>
-    &nbsp;|&nbsp;
-    <a th:href="@{/login}">Logout</a>
+        <p><strong>ID:</strong> <span th:text="${member.id}"></span></p>
+        <p><strong>Nama:</strong> <span th:text="${member.name}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${member.email}"></span></p>
+        <p><strong>No HP:</strong> <span th:text="${member.phone}"></span></p>
+        <p><strong>Jenis Kelamin:</strong> <span th:text="${member.jenisKelamin}"></span></p>
+        <p><strong>Tanggal Lahir:</strong> <span th:text="${member.tanggalLahir}"></span></p>
+        <p><strong>Umur:</strong> <span th:text="${member.umur}"></span> tahun</p>
+        <p><strong>Status:</strong> <span th:text="${member.status}"></span></p>
+
+        <div class="actions">
+            <a th:href="@{/profile/{id}/edit(id=${member.id})}">Edit Profile</a>
+            <a th:href="@{/login}">Logout</a>
+        </div>
+    </div>
 
 </body>
 </html>
