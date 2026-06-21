@@ -20,7 +20,7 @@ public class MemberController {
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/register";
+        return "landing";
     }
 
     @GetMapping("/register")

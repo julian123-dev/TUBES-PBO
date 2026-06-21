@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SportSync - Booking Lapangan Olahraga</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #1a1a2e;
+            color: white;
+        }
+
+        nav h2 {
+            font-size: 24px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 18px;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: white;
+            color: #1a1a2e;
+        }
+
+        .hero {
+            height: 400px;
+            background-color: #16213e;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        .hero a {
+            background-color: #e94560;
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .lapangan-section {
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .lapangan-section h2 {
+            margin-bottom: 30px;
+            color: #1a1a2e;
+        }
+
+        .lapangan-grid {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .lapangan-card {
+            width: 250px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .lapangan-image {
+            height: 150px;
+            background-color: #0f3460;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .lapangan-card h3 {
+            padding: 15px 15px 5px 15px;
+            color: #1a1a2e;
+        }
+
+        .lapangan-card p {
+            padding: 0 15px 15px 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a2e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h2>SportSync</h2>
+        <div>
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/register}">Daftar</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Booking Lapangan Olahraga Jadi Mudah</h1>
+        <p>Temukan dan pesan lapangan favoritmu kapan saja, di mana saja</p>
+        <a th:href="@{/register}">Mulai Booking</a>
+    </section>
+
+    <section class="lapangan-section">
+        <h2>Lapangan Tersedia</h2>
+        <div class="lapangan-grid">
+
+            <div class="lapangan-card">
+                <div class="lapangan-image">Foto Lapangan Futsal</div>
+                <h3>Lapangan Futsal A</h3>
+                <p>Rp 90.000 / jam</p>
+            </div>
+
+            <div class="lapangan-card">
+                <div class="lapangan-image">Foto Lapangan Basket</div>
+                <h3>Lapangan Basket B</h3>
+                <p>Rp 100.000 / jam</p>
+            </div>
+
+            <div class="lapangan-card">
+                <div class="lapangan-image">Foto Lapangan Badminton</div>
+                <h3>Lapangan Badminton C</h3>
+                <p>Rp 40.000 / jam</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 SportSync. Tugas Besar Pemrograman Berorientasi Objek.</p>
+    </footer>
+
+</body>
+</html>
