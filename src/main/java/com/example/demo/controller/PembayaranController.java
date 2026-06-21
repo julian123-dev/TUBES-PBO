@@ -26,7 +26,7 @@ public class PembayaranController {
     @Autowired
     private HistoryService historyService;
 
-    @GetMapping("/")
+    @GetMapping("/pembayaran")
     public String home(Model model) {
 
         model.addAttribute(

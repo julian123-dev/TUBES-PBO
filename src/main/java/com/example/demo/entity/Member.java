@@ -1,14 +1,15 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
-import java.time.Period;
 
 @Entity
 @Table(name = "member")
@@ -73,19 +74,19 @@ public class Member {
     }
 
     public String getJenisKelamin() {
-    return jenisKelamin;
+        return jenisKelamin;
     }
 
     public void setJenisKelamin(String jenisKelamin) {
-    this.jenisKelamin = jenisKelamin;
+        this.jenisKelamin = jenisKelamin;
     }
 
     public LocalDate getTanggalLahir() {
-    return tanggalLahir;
+        return tanggalLahir;
     }
 
     public void setTanggalLahir(LocalDate tanggalLahir) {
-    this.tanggalLahir = tanggalLahir;
+        this.tanggalLahir = tanggalLahir;
     }
 
     public String getEmail() {
@@ -126,5 +127,12 @@ public class Member {
 
     public void setUpdateLocalDateTime(LocalDateTime updateLocalDateTime) {
         this.updateLocalDateTime = updateLocalDateTime;
+    }
+
+    public int getUmur() {
+        if (tanggalLahir == null) {
+            return 0;
+        }
+        return Period.between(tanggalLahir, LocalDate.now()).getYears();
     }
 }
