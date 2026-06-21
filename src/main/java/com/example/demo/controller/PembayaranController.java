@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import com.example.demo.entity.Pembayaran;
-import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.HistoryService;
 import com.example.demo.service.PembayaranService;
 
@@ -20,21 +20,14 @@ public class PembayaranController {
     private PembayaranService pembayaranService;
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
     private HistoryService historyService;
 
-    @GetMapping("/pembayaran")
+    @GetMapping("/")
     public String home(Model model) {
 
         model.addAttribute(
                 "listPembayaran",
                 pembayaranService.getAllPembayaran());
-
-        model.addAttribute(
-                "listMember",
-                memberRepository.findAll());
 
         model.addAttribute(
                 "listHistory",
@@ -55,11 +48,14 @@ public class PembayaranController {
 
     @PostMapping("/simpan")
     public String simpan(
-            @ModelAttribute Pembayaran pembayaran) {
+            @ModelAttribute Pembayaran pembayaran,
+            Model model) {
 
-        pembayaranService.simpanPembayaran(pembayaran);
+        Pembayaran hasil = pembayaranService.simpanPembayaran(pembayaran);
 
-        return "redirect:/";
+        model.addAttribute("pembayaran", hasil);
+
+        return "struk";
     }
 
     @GetMapping("/hapus/{id}")

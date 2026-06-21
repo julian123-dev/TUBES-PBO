@@ -16,6 +16,8 @@ public class Pembayaran {
 
     private String namaPelanggan;
 
+    private String jenisLayanan;
+
     private String metodePembayaran;
 
     private Double jumlah;
@@ -37,6 +39,14 @@ public class Pembayaran {
 
     public void setNamaPelanggan(String namaPelanggan) {
         this.namaPelanggan = namaPelanggan;
+    }
+
+    public String getJenisLayanan() {
+        return jenisLayanan;
+    }
+
+    public void setJenisLayanan(String jenisLayanan) {
+        this.jenisLayanan = jenisLayanan;
     }
 
     public String getMetodePembayaran() {
