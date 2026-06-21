@@ -1,13 +1,14 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "member")
@@ -22,6 +23,12 @@ public class Member {
 
     @Column(name = "phone", length = 15, unique = true)
     private String phone;
+
+    @Column(name = "jenis_kelamin", length = 20)
+    private String jenisKelamin;
+
+    @Column(name = "tanggal_lahir")
+    private LocalDate tanggalLahir;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -63,6 +70,22 @@ public class Member {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getJenisKelamin() {
+    return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+    this.jenisKelamin = jenisKelamin;
+    }
+
+    public LocalDate getTanggalLahir() {
+    return tanggalLahir;
+    }
+
+    public void setTanggalLahir(LocalDate tanggalLahir) {
+    this.tanggalLahir = tanggalLahir;
     }
 
     public String getEmail() {

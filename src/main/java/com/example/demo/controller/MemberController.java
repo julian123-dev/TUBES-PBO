@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.example.demo.entity.Member;
 import com.example.demo.service.MemberService;
 
@@ -17,22 +18,24 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    // Redirect halaman utama langsung ke halaman register
     @GetMapping("/")
     public String home() {
         return "redirect:/register";
     }
 
-    // Menampilkan halaman form registrasi
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("member", new Member());
         return "register";
     }
 
-    // Memproses data dari form registrasi
     @PostMapping("/register")
     public String processRegister(@ModelAttribute Member member, Model model) {
+
+        if (!memberService.validasiData(member)) {
+            model.addAttribute("error", "Data belum lengkap, mohon isi semua field wajib");
+            return "register";
+        }
 
         if (memberService.isEmailExists(member.getEmail())) {
             model.addAttribute("error", "Email sudah terdaftar, silakan gunakan email lain");
@@ -43,13 +46,11 @@ public class MemberController {
         return "redirect:/login";
     }
 
-    // Menampilkan halaman form login
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
     }
 
-    // Memproses login
     @PostMapping("/login")
     public String processLogin(@RequestParam String email,
                                  @RequestParam String password,
@@ -66,7 +67,6 @@ public class MemberController {
         return "profile";
     }
 
-    // Menampilkan profile berdasarkan id
     @GetMapping("/profile/{id}")
     public String showProfile(@PathVariable Long id, Model model) {
         Member member = memberService.getMemberById(id);
@@ -74,7 +74,6 @@ public class MemberController {
         return "profile";
     }
 
-    // Menampilkan halaman form edit profile
     @GetMapping("/profile/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         Member member = memberService.getMemberById(id);
@@ -82,7 +81,6 @@ public class MemberController {
         return "edit-profile";
     }
 
-    // Memproses perubahan data profile
     @PostMapping("/profile/{id}/edit")
     public String processEditProfile(@PathVariable Long id, @ModelAttribute Member member) {
         memberService.updateMember(id, member);

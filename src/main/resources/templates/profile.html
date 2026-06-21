@@ -12,6 +12,9 @@
     <p><strong>Nama:</strong> <span th:text="${member.name}"></span></p>
     <p><strong>Email:</strong> <span th:text="${member.email}"></span></p>
     <p><strong>No HP:</strong> <span th:text="${member.phone}"></span></p>
+    <p><strong>Jenis Kelamin:</strong> <span th:text="${member.jenisKelamin}"></span></p>
+    <p><strong>Tanggal Lahir:</strong> <span th:text="${member.tanggalLahir}"></span></p>
+    <p><strong>Umur:</strong> <span th:text="${member.umur}"></span> tahun</p>
     <p><strong>Status:</strong> <span th:text="${member.status}"></span></p>
 
     <a th:href="@{/profile/{id}/edit(id=${member.id})}">Edit Profile</a>
