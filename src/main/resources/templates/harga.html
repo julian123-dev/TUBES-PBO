@@ -63,31 +63,39 @@
     <div class="card">
         <div class="card-title">Rekomendasi Paket</div>
         <div class="paket-grid">
-            <div th:each="p, i : ${paketList}" class="paket-card"
-                 onclick="pilihPaket(this)"
-                 th:data-id="${p.idPaket}">
 
-                <img th:if="${i.index == 0}" th:src="@{/images/paketA.jpeg}" alt="Paket A" class="paket-img">
-                <img th:if="${i.index == 1}" th:src="@{/images/paketB.jpeg}" alt="Paket B" class="paket-img">
-                <img th:if="${i.index == 2}" th:src="@{/images/paketC.jpeg}" alt="Paket C" class="paket-img">
+            <div class="paket-card" onclick="pilihPaket(this)" data-id="1" data-durasi="2" data-diskon="0">
+                <img src="/images/paket-a.jpeg" alt="Paket A" class="paket-img">
+                <div class="paket-nama">Paket A</div>
+                <div class="paket-harga">Rp 0</div>
+                <div class="paket-desc">Main 2 jam, gratis Aqua 2 liter</div>
+                <div class="paket-durasi">Durasi: 2 hari</div>
+            </div>
 
-                <div class="paket-nama" th:text="${p.namaPaket}"></div>
-                <div class="paket-harga" th:text="'Rp ' + ${#numbers.formatInteger(p.harga, 1, 'COMMA')}"></div>
-                <div class="paket-desc" th:text="${p.deskripsi}"></div>
-                <div class="paket-durasi" th:text="'Durasi: ' + ${p.durasiHari} + ' hari'"></div>
+            <div class="paket-card" onclick="pilihPaket(this)" data-id="2" data-durasi="3" data-diskon="0">
+                <img src="/images/paket-b.jpeg" alt="Paket B" class="paket-img">
+                <div class="paket-nama">Paket B</div>
+                <div class="paket-harga">Rp 0</div>
+                <div class="paket-desc">Main 3 jam, gratis Aqua 3 liter</div>
+                <div class="paket-durasi">Durasi: 3 hari</div>
             </div>
-            <div th:if="${#lists.isEmpty(paketList)}" class="empty-state">
-                Belum ada paket tersedia
+
+            <div class="paket-card" onclick="pilihPaket(this)" data-id="3" data-durasi="4" data-diskon="12">
+                <img src="/images/paket-c.jpeg" alt="Paket C" class="paket-img">
+                <div class="paket-nama">Paket C</div>
+                <div class="paket-harga">Rp 0</div>
+                <div class="paket-desc">Main 4 jam, gratis Aqua 3 liter + diskon 12%</div>
+                <div class="paket-durasi">Durasi: 4 hari</div>
             </div>
+
         </div>
-
-        <script th:inline="javascript">
-            const dataPaket = /*[[${paketList}]]*/ [];
-            const listLapanganDB = /*[[${lapanganList}]]*/ [];
-        </script>
     </div>
 
 </div>
+
+<script th:inline="javascript">
+    const listLapanganDB = /*[[${lapanganList}]]*/ [];
+</script>
 
 <script>
     const dataLapangan = {};
@@ -147,15 +155,12 @@
 
     function updateHargaPaket() {
         const kartuPaket = document.querySelectorAll('.paket-card');
-        kartuPaket.forEach((card, i) => {
-            if (!dataPaket[i]) return;
-            const durasi = dataPaket[i].durasiHari;
+        kartuPaket.forEach((card) => {
+            const durasi = parseInt(card.getAttribute('data-durasi'));
+            const diskon = parseInt(card.getAttribute('data-diskon'));
             let harga = durasi * hargaPerJamAktif;
-            const desc = dataPaket[i].deskripsi || '';
-            const matchDiskon = desc.match(/diskon\s+(\d+)%/i);
-            if (matchDiskon) {
-                const persen = parseInt(matchDiskon[1]);
-                harga = harga * (1 - persen / 100);
+            if (diskon > 0) {
+                harga = harga * (1 - diskon / 100);
             }
             const elHarga = card.querySelector('.paket-harga');
             if (elHarga) elHarga.textContent = 'Rp ' + Math.round(harga).toLocaleString('id-ID');

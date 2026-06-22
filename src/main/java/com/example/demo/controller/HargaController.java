@@ -23,7 +23,6 @@ public class HargaController {
     public String hargaPage(Model model) {
         List<Harga> lapanganList = hargaService.getAllLapangan();
         model.addAttribute("lapanganList", lapanganList);
-        model.addAttribute("paketList", List.of()); // kosong dulu, isi kalau ada entity Paket
         return "harga";
     }
 
@@ -32,7 +31,6 @@ public class HargaController {
                                Model model) {
         List<Harga> lapanganList = hargaService.getAllLapangan();
         model.addAttribute("lapanganList", lapanganList);
-        model.addAttribute("paketList", List.of());
 
         if (idLapangan != null) {
             Optional<Harga> lapangan = hargaService.getLapanganById(idLapangan);
