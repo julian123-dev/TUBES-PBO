@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,24 +19,16 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relasi ke Member: banyak Booking bisa dimiliki oleh 1 Member
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    // Relasi ke Lapangan: banyak Booking bisa terjadi di 1 Lapangan
     @ManyToOne
-    @JoinColumn(name = "lapangan_id")
-    private Lapangan lapangan;
+    @JoinColumn(name = "id_jadwal")
+    private Jadwal jadwal;
 
-    @Column(name = "tanggal_booking", nullable = false)
-    private LocalDate tanggalBooking;
-
-    @Column(name = "jam_mulai", nullable = false)
-    private LocalTime jamMulai;
-
-    @Column(name = "jam_selesai", nullable = false)
-    private LocalTime jamSelesai;
+    @Column(name = "tanggal_dibuat")
+    private LocalDateTime tanggalDibuat;
 
     @Column(name = "status", length = 20)
     private String status;
@@ -61,36 +52,20 @@ public class Booking {
         this.member = member;
     }
 
-    public Lapangan getLapangan() {
-        return lapangan;
+    public Jadwal getJadwal() {
+        return jadwal;
     }
 
-    public void setLapangan(Lapangan lapangan) {
-        this.lapangan = lapangan;
+    public void setJadwal(Jadwal jadwal) {
+        this.jadwal = jadwal;
     }
 
-    public LocalDate getTanggalBooking() {
-        return tanggalBooking;
+    public LocalDateTime getTanggalDibuat() {
+        return tanggalDibuat;
     }
 
-    public void setTanggalBooking(LocalDate tanggalBooking) {
-        this.tanggalBooking = tanggalBooking;
-    }
-
-    public LocalTime getJamMulai() {
-        return jamMulai;
-    }
-
-    public void setJamMulai(LocalTime jamMulai) {
-        this.jamMulai = jamMulai;
-    }
-
-    public LocalTime getJamSelesai() {
-        return jamSelesai;
-    }
-
-    public void setJamSelesai(LocalTime jamSelesai) {
-        this.jamSelesai = jamSelesai;
+    public void setTanggalDibuat(LocalDateTime tanggalDibuat) {
+        this.tanggalDibuat = tanggalDibuat;
     }
 
     public String getStatus() {
