@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Harga;
-import com.example.demo.entity.Paket;
 import com.example.demo.service.HargaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,13 +19,10 @@ public class HargaController {
     @Autowired
     private HargaService hargaService;
 
-    // ===== HALAMAN DETAIL HARGA =====
-    // Dipanggil dari landing page Rafael: /harga/detail?idLapangan=1
     @GetMapping("/detail")
     public String detailHarga(@RequestParam(name = "idLapangan", required = false) Integer idLapangan,
                                Model model) {
 
-        // 1. Ambil data lapangan berdasarkan ID yang dikirim Rafael (untuk autofill/pre-select)
         if (idLapangan != null) {
             Optional<Harga> lapangan = hargaService.getLapanganById(idLapangan);
             if (lapangan.isPresent()) {
@@ -37,19 +33,10 @@ public class HargaController {
             }
         } else {
             model.addAttribute("lapangan", null);
-            // Hapus pesan error bawaan lama agar tidak muncul text mengganggu saat pertama kali buka tanpa ID
         }
 
-        /* * ========== PERUBAHAN DI SINI ==========
-         * 2. Ambil SEMUA data lapangan untuk mengisi opsi Dropdown secara dinamis dari DB
-         * (Pastikan method getAllLapangan() sudah kamu buat di HargaService.java ya!)
-         */
         List<Harga> lapanganList = hargaService.getAllLapangan();
         model.addAttribute("lapanganList", lapanganList);
-
-        // 3. Ambil semua paket aktif untuk ditampilkan sebagai rekomendasi
-        List<Paket> paketList = hargaService.getPaketAktif();
-        model.addAttribute("paketList", paketList);
 
         return "harga/harga";
     }
