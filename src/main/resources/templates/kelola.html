@@ -134,7 +134,6 @@
 
 <div class="container">
 
-
     <div class="card">
         <h2>Data Member</h2>
 
@@ -152,17 +151,18 @@
             </tr>
             </thead>
 
+            <!-- ✅ PERBAIKAN DI SINI -->
             <tbody>
-            <tr th:each="m : ${listMember}">
-                <td th:text="${m.id}"></td>
-                <td th:text="${m.name}"></td>
-                <td th:text="${m.email}"></td>
-                <td th:text="${m.phone}"></td>
-                <td th:text="${m.jenisKelamin}"></td>
-                <td th:text="${m.tanggalLahir}"></td>
-                <td th:text="${m.status}"></td>
-                <td th:text="${m.umur}"></td>
-            </tr>
+                <tr th:each="m : ${daftarMember}">  <!-- ← daftarMember -->
+                    <td th:text="${m.id}"></td>
+                    <td th:text="${m.nama}"></td>    <!-- ← nama -->
+                    <td th:text="${m.email}"></td>
+                    <td th:text="${m.noTelepon}"></td> <!-- ← noTelepon -->
+                    <td th:text="${m.jenisKelamin}"></td>
+                    <td th:text="${m.tanggalLahir}"></td>
+                    <td th:text="${m.status}"></td>
+                    <td th:text="${#temporals.year(m.tanggalLahir)}"></td> <!-- ← hitung umur -->
+                </tr>
             </tbody>
         </table>
     </div>
@@ -183,17 +183,17 @@
             </thead>
 
             <tbody>
-            <tr th:each="h : ${listHistory}">
-                <td th:text="${h.id}"></td>
-                <td th:text="${h.namaMember}"></td>
-                <td th:text="${h.metodePembayaran}"></td>
-                <td th:text="${'Rp ' + #numbers.formatDecimal(h.jumlah, 0, 'COMMA', 0, 'POINT')}"></td>
-                <td th:text="${#temporals.format(h.tanggal,'dd-MM-yyyy (HH:mm:ss)')}"></td>
-                <td>
-                    <a th:href="@{/history/edit/{id}(id=${h.id})}" class="btn-edit-sm">Edit</a>
-                    <a th:href="@{/history/hapus/{id}(id=${h.id})}" class="btn-danger-sm">Hapus</a>
-                </td>
-            </tr>
+                <tr th:each="h : ${listHistory}">
+                    <td th:text="${h.id}"></td>
+                    <td th:text="${h.namaMember}"></td>
+                    <td th:text="${h.metodePembayaran}"></td>
+                    <td th:text="${'Rp ' + #numbers.formatDecimal(h.jumlah, 0, 'COMMA', 0, 'POINT')}"></td>
+                    <td th:text="${#temporals.format(h.tanggal,'dd-MM-yyyy (HH:mm:ss)')}"></td>
+                    <td>
+                        <a th:href="@{/history/edit/{id}(id=${h.id})}" class="btn-edit-sm">Edit</a>
+                        <a th:href="@{/history/hapus/{id}(id=${h.id})}" class="btn-danger-sm">Hapus</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
