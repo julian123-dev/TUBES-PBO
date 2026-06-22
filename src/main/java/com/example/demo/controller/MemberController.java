@@ -66,11 +66,9 @@ public class MemberController {
             return "login";
         }
 
-        // Simpan data member yang login ke session
         session.setAttribute("member", member);
-
         model.addAttribute("member", member);
-        return "daftarlapangan";
+        return "redirect:/lapangan"; // ← fix: redirect ke LapanganController
     }
 
     @GetMapping("/profile/{id}")
@@ -90,14 +88,10 @@ public class MemberController {
     @PostMapping("/profile/{id}/edit")
     public String processEditProfile(@PathVariable Long id, @ModelAttribute Member member, HttpSession session) {
         Member updated = memberService.updateMember(id, member);
-
-        // Update juga data di session, biar data terbaru ikut tersimpan
         session.setAttribute("member", updated);
-
         return "redirect:/profile/" + id;
     }
 
-    // Logout: hapus data session
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
