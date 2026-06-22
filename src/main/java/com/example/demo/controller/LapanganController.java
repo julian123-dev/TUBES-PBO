@@ -24,6 +24,19 @@ public class LapanganController {
         return "daftarLapangan";
     }
 
+    @GetMapping("/jadwal/{id}")
+    public String lihatJadwalLapangan(@PathVariable("id") Integer id, Model model) {
+        // Menggunakan method 'lihatDetailLapangan' yang mengembalikan Optional, 
+        // lalu kita bongkar menggunakan .orElseThrow() agar aman dari NullPointerException
+        Lapangan lapangan = lapanganService.lihatDetailLapangan(id)
+                .orElseThrow(() -> new IllegalArgumentException("Lapangan tidak ditemukan dengan ID: " + id));
+        
+        // Mengirimkan data objek lapangan yang tepat ke file HTML 'daftarJadwal'
+        model.addAttribute("lapangan", lapangan);
+        
+        return "daftarJadwal";
+    }
+
     @PostMapping("/simpan")
     public String simpanLapangan(@ModelAttribute Lapangan lapangan) {
         if (lapangan.getIdLapangan() == null) {
