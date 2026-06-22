@@ -70,7 +70,7 @@ public class MemberController {
         session.setAttribute("member", member);
 
         model.addAttribute("member", member);
-        return "profile";
+        return "daftarlapangan";
     }
 
     @GetMapping("/profile/{id}")
