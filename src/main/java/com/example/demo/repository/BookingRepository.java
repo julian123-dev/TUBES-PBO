@@ -1,22 +1,19 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Booking;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.entity.Booking;
+
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, Integer> {
+public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    List<Booking> findByMember_IdMember(Integer idMember);
+    // Cari booking berdasarkan id member, urut dari tanggal terbaru
+    List<Booking> findByMember_IdOrderByTanggalBookingDesc(Long memberId);
 
-    List<Booking> findByStatusIgnoreCase(String status);
-
-    List<Booking> findByJadwal_IdJadwal(Integer idJadwal);
-
-    List<Booking> findByMember_IdMemberOrderByTanggalBookingDesc(Integer idMember);
-
-    List<Booking> findByJadwal_Lapangan_IdLapanganAndJadwal_Tanggal(Integer idLapangan, LocalDate tanggal);
+    // Cari booking berdasarkan lapangan & tanggal (buat cek jadwal kosong/penuh)
+    List<Booking> findByLapangan_IdLapanganAndTanggalBooking(Integer idLapangan, LocalDate tanggal);
 }
