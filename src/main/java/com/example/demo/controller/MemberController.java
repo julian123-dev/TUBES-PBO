@@ -68,7 +68,7 @@ public class MemberController {
 
         session.setAttribute("member", member);
         model.addAttribute("member", member);
-        return "redirect:/lapangan"; // ← fix: redirect ke LapanganController
+        return "redirect:/lapangan"; // 
     }
 
     @GetMapping("/profile/{id}")
