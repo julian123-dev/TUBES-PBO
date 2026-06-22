@@ -55,7 +55,7 @@ public class JadwalController {
         model.addAttribute("tanggal", tgl.toString());
 
         // ✅ FIX UTAMA DI SINI
-        return "jadwal/daftarJadwal";
+        return "daftarJadwal";
     }
 
     @PostMapping("/booking")
