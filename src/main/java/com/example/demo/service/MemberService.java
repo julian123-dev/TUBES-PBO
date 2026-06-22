@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class MemberService {
         member.setCreatedLocalDateTime(LocalDateTime.now());
         member.setUpdateLocalDateTime(LocalDateTime.now());
         return memberRepository.save(member);
+    }
+
+    // Ambil semua member
+    public List<Member> getAllMember() {
+        return memberRepository.findAll();
     }
 
     // Cek login, return member kalau email dan password cocok

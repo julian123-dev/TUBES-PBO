@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.entity.History;
 import com.example.demo.entity.Pembayaran;
 import com.example.demo.service.HistoryService;
+import com.example.demo.service.MemberService;
 import com.example.demo.service.PembayaranService;
 
 @Controller
@@ -23,6 +23,9 @@ public class PembayaranController {
     @Autowired
     private HistoryService historyService;
 
+    @Autowired
+    private MemberService memberService;
+
     @GetMapping("/pembayaran")
     public String home(Model model) {
 
@@ -33,6 +36,10 @@ public class PembayaranController {
         model.addAttribute(
                 "listHistory",
                 historyService.getAllHistory());
+
+        model.addAttribute(
+                "listMember",
+                memberService.getAllMember());
 
         return "kelola";
     }
