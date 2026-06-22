@@ -2,14 +2,17 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "jadwal")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Jadwal {
@@ -18,7 +21,8 @@ public class Jadwal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idJadwal;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_lapangan", nullable = false)
     private Lapangan lapangan;
 
