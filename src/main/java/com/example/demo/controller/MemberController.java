@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entity.Member;
 import com.example.demo.service.MemberService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class MemberController {
 
@@ -54,7 +56,8 @@ public class MemberController {
     @PostMapping("/login")
     public String processLogin(@RequestParam String email,
                                  @RequestParam String password,
-                                 Model model) {
+                                 Model model,
+                                 HttpSession session) {
 
         Member member = memberService.login(email, password);
 
@@ -62,6 +65,9 @@ public class MemberController {
             model.addAttribute("error", "Email atau password salah");
             return "login";
         }
+
+        // Simpan data member yang login ke session
+        session.setAttribute("member", member);
 
         model.addAttribute("member", member);
         return "profile";
@@ -82,8 +88,19 @@ public class MemberController {
     }
 
     @PostMapping("/profile/{id}/edit")
-    public String processEditProfile(@PathVariable Long id, @ModelAttribute Member member) {
-        memberService.updateMember(id, member);
+    public String processEditProfile(@PathVariable Long id, @ModelAttribute Member member, HttpSession session) {
+        Member updated = memberService.updateMember(id, member);
+
+        // Update juga data di session, biar data terbaru ikut tersimpan
+        session.setAttribute("member", updated);
+
         return "redirect:/profile/" + id;
+    }
+
+    // Logout: hapus data session
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
     }
 }
