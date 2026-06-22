@@ -8,10 +8,10 @@
 </head>
 <body>
 
-<div class="navbar">
-    <h1> SportSync</h1>
-    <span>/ Harga Lapangan</span>
-</div>
+<nav>
+    <h2>SportSync</h2>
+    <span style="color:#aaa; font-size:14px;">/ Harga Lapangan</span>
+</nav>
 
 <div class="container">
 
@@ -22,8 +22,8 @@
             <label for="pilihLapangan">Jenis Lapangan</label>
             <select id="pilihLapangan" onchange="gantiLapangan()">
                 <option value="">-- Pilih Lapangan --</option>
-                <option th:each="l : ${lapanganList}" 
-                        th:value="${l.idLapangan}" 
+                <option th:each="l : ${lapanganList}"
+                        th:value="${l.idLapangan}"
                         th:text="${l.nama}">
                 </option>
             </select>
@@ -56,17 +56,22 @@
         </div>
 
         <div id="btn-bayar-wrapper" style="display:none; margin-top:16px; text-align:right;">
-            <a href="/pembayaran" id="linkBayar" class="btn-bayar">Bayar Sekarang</a>
+            <a href="#" id="linkBayar" class="btn-bayar">Bayar Sekarang</a>
         </div>
     </div>
 
     <div class="card">
         <div class="card-title">🎁 Rekomendasi Paket</div>
         <div class="paket-grid">
-            <div class="paket-card" th:each="p, i : ${paketList}" onclick="pilihPaket(this)" th:data-id="${p.idPaket}">
-                <img th:if="${i.index == 0}" th:src="@{/images/paket-a.svg}" alt="Paket A">
-                <img th:if="${i.index == 1}" th:src="@{/images/paket-b.svg}" alt="Paket B">
-                <img th:if="${i.index == 2}" th:src="@{/images/paket-c.svg}" alt="Paket C">
+            <div th:each="p, i : ${paketList}" class="paket-card"
+                 onclick="pilihPaket(this)"
+                 th:data-id="${p.idPaket}">
+                <div class="paket-badge" th:classappend="${i.index == 0} ? 'badge-a' : (${i.index == 1} ? 'badge-b' : 'badge-c')">
+                    <span th:text="${i.index == 0} ? 'A' : (${i.index == 1} ? 'B' : 'C')">A</span>
+                    <div class="paket-stars">
+                        <span th:each="s : ${#numbers.sequence(1, i.index + 1)}">⭐</span>
+                    </div>
+                </div>
                 <div class="paket-nama" th:text="${p.namaPaket}"></div>
                 <div class="paket-harga" th:text="'Rp ' + ${#numbers.formatInteger(p.harga, 1, 'COMMA')}"></div>
                 <div class="paket-desc" th:text="${p.deskripsi}"></div>
@@ -86,7 +91,6 @@
 </div>
 
 <script>
-    // SOLUSI 2: Object dataLapangan sekarang diisi otomatis dari database, bukan hardcode lagi
     const dataLapangan = {};
     listLapanganDB.forEach(l => {
         dataLapangan[l.idLapangan] = {
@@ -98,7 +102,7 @@
     });
 
     let hargaPerJamAktif = 0;
-    let idPaketTerpilih = ""; // Tracker untuk paket yang dipilih
+    let idPaketTerpilih = "";
 
     function gantiLapangan() {
         const pilihan = document.getElementById('pilihLapangan').value;
@@ -146,21 +150,16 @@
         const kartuPaket = document.querySelectorAll('.paket-card');
         kartuPaket.forEach((card, i) => {
             if (!dataPaket[i]) return;
-
             const durasi = dataPaket[i].durasiHari;
             let harga = durasi * hargaPerJamAktif;
-
             const desc = dataPaket[i].deskripsi || '';
             const matchDiskon = desc.match(/diskon\s+(\d+)%/i);
             if (matchDiskon) {
                 const persen = parseInt(matchDiskon[1]);
                 harga = harga * (1 - persen / 100);
             }
-
             const elHarga = card.querySelector('.paket-harga');
-            if (elHarga) {
-                elHarga.textContent = 'Rp ' + Math.round(harga).toLocaleString('id-ID');
-            }
+            if (elHarga) elHarga.textContent = 'Rp ' + Math.round(harga).toLocaleString('id-ID');
         });
     }
 
@@ -173,10 +172,7 @@
         const durasiEl = document.getElementById('durasiJam');
         const btnBayar = document.getElementById('btn-bayar-wrapper');
 
-        if (!jamMulai || !jamSelesai) {
-            btnBayar.style.display = 'none';
-            return;
-        }
+        if (!jamMulai || !jamSelesai) { btnBayar.style.display = 'none'; return; }
 
         const [jM, mM] = jamMulai.split(':').map(Number);
         const [jS, mS] = jamSelesai.split(':').map(Number);
@@ -191,42 +187,28 @@
         }
 
         errorMsg.style.display = 'none';
-
         const totalJam = totalMenit / 60;
         const total = totalJam * hargaPerJamAktif;
-
         durasiEl.textContent = totalJam;
         totalEl.textContent = 'Rp ' + Math.round(total).toLocaleString('id-ID');
-
         btnBayar.style.display = 'block';
-
-        // SOLUSI 3: Update URL link pembayaran secara real-time membawa parameter data ke Julian
         updateLinkPembayaran(pilihanLapangan, jamMulai, jamSelesai, Math.round(total));
     }
 
-    // Fungsi tambahan untuk menyusun URL parameter secara aman
     function updateLinkPembayaran(idLapangan, mulai, selesai, totalHarga) {
         const linkBayar = document.getElementById('linkBayar');
         let url = `/pembayaran?idLapangan=${idLapangan}&jamMulai=${mulai}&jamSelesai=${selesai}&total=${totalHarga}`;
-        if (idPaketTerpilih) {
-            url += `&idPaket=${idPaketTerpilih}`;
-        }
+        if (idPaketTerpilih) url += `&idPaket=${idPaketTerpilih}`;
         linkBayar.href = url;
     }
 
     function pilihPaket(card) {
         document.querySelectorAll('.paket-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
-        
-        // Simpan ID paket terpilih
         idPaketTerpilih = card.getAttribute('data-id');
-        
-        // Picu hitung ulang total jika jam sudah terisi agar URL ter-update membawa info paket
         const jamMulai = document.getElementById('jamMulai').value;
         const jamSelesai = document.getElementById('jamSelesai').value;
-        if (jamMulai && jamSelesai) {
-            hitungTotal();
-        }
+        if (jamMulai && jamSelesai) hitungTotal();
     }
 </script>
 

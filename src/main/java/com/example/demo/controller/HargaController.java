@@ -19,24 +19,25 @@ public class HargaController {
     @Autowired
     private HargaService hargaService;
 
+    @GetMapping
+    public String hargaPage(Model model) {
+        List<Harga> lapanganList = hargaService.getAllLapangan();
+        model.addAttribute("lapanganList", lapanganList);
+        model.addAttribute("paketList", List.of()); // kosong dulu, isi kalau ada entity Paket
+        return "harga";
+    }
+
     @GetMapping("/detail")
     public String detailHarga(@RequestParam(name = "idLapangan", required = false) Integer idLapangan,
                                Model model) {
+        List<Harga> lapanganList = hargaService.getAllLapangan();
+        model.addAttribute("lapanganList", lapanganList);
+        model.addAttribute("paketList", List.of());
 
         if (idLapangan != null) {
             Optional<Harga> lapangan = hargaService.getLapanganById(idLapangan);
-            if (lapangan.isPresent()) {
-                model.addAttribute("lapangan", lapangan.get());
-            } else {
-                model.addAttribute("lapangan", null);
-                model.addAttribute("errorMsg", "Lapangan tidak ditemukan.");
-            }
-        } else {
-            model.addAttribute("lapangan", null);
+            lapangan.ifPresent(h -> model.addAttribute("lapangan", h));
         }
-
-        List<Harga> lapanganList = hargaService.getAllLapangan();
-        model.addAttribute("lapanganList", lapanganList);
 
         return "harga";
     }

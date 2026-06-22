@@ -32,6 +32,11 @@ nav a:hover {
     color: #1a1a2e;
 }
 
+nav span {
+    color: #aaa;
+    font-size: 14px;
+}
+
 .hero {
     height: 400px;
     background-color: #16213e;
@@ -103,3 +108,143 @@ footer {
     background-color: #1a1a2e;
     color: white;
 }
+
+/* ===== HARGA PAGE ===== */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #555;
+}
+
+.form-group select,
+.form-group input[type="time"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.info-harga {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+}
+
+.info-sub {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 16px;
+}
+
+.total-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0f4ff;
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-top: 16px;
+}
+
+.total-label { font-size: 14px; color: #555; }
+.total-nilai { font-size: 20px; font-weight: bold; color: #1a1a2e; }
+
+.error-msg {
+    color: red;
+    font-size: 12px;
+    display: none;
+    margin-top: 4px;
+}
+
+.btn-bayar {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-bayar:hover { background-color: #e94560; }
+
+/* Paket */
+.paket-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.paket-card {
+    border: 2px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.paket-card:hover {
+    border-color: #1a1a2e;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.paket-card.selected { border-color: #e94560; }
+
+.paket-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.badge-a { background: #f4a261; }
+.badge-b { background: #adb5bd; }
+.badge-c { background: #f4c842; }
+
+.paket-stars { font-size: 12px; }
+.paket-nama { font-weight: bold; color: #1a1a2e; margin-bottom: 6px; }
+.paket-harga { font-size: 18px; font-weight: bold; margin-bottom: 6px; }
+.paket-desc { font-size: 12px; color: #777; }
+.paket-durasi { font-size: 12px; color: #aaa; margin-top: 4px; }
+.empty-state { color: #aaa; font-size: 14px; padding: 20px; text-align: center; }
