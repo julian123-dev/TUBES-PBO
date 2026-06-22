@@ -38,6 +38,6 @@ public class HargaController {
         List<Harga> lapanganList = hargaService.getAllLapangan();
         model.addAttribute("lapanganList", lapanganList);
 
-        return "harga/harga";
+        return "harga";
     }
 }
