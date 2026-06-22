@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.Booking;
 import com.example.demo.entity.Jadwal;
 import com.example.demo.entity.Lapangan;
+import com.example.demo.entity.Member;
 import com.example.demo.service.BookingService;
 import com.example.demo.service.JadwalService;
 import com.example.demo.service.LapanganService;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,9 +57,17 @@ public class JadwalController {
 
     @PostMapping("/booking")
     public String prosesBooking(@RequestParam List<Integer> idJadwal,
-                                 @RequestParam Integer idLapangan) {
+                                 @RequestParam Integer idLapangan,
+                                 HttpSession session) {
+
+        Member member = (Member) session.getAttribute("member");
+
+        if (member == null) {
+            return "redirect:/login";
+        }
+
         for (Integer id : idJadwal) {
-            bookingService.buatBooking(id);
+            bookingService.buatBooking(id, member.getId());
         }
         return "redirect:/jadwal/" + idLapangan + "?success=true";
     }

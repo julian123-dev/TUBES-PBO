@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Booking;
 import com.example.demo.entity.Jadwal;
+import com.example.demo.entity.Member;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.JadwalRepository;
+import com.example.demo.repository.MemberRepository;
 
 @Service
 public class BookingService {
@@ -21,6 +23,9 @@ public class BookingService {
 
     @Autowired
     private JadwalRepository jadwalRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     public List<Booking> getAllBooking() {
         return bookingRepository.findAll();
@@ -35,11 +40,14 @@ public class BookingService {
         return bookingRepository.findByMember_IdOrderByTanggalDibuatDesc(memberId);
     }
 
-    // Membuat booking baru dari satu id Jadwal
+    public List<Booking> getBookingByLapanganDanTanggal(Integer idLapangan, LocalDate tanggal) {
+        return bookingRepository.findByJadwal_Lapangan_IdLapanganAndJadwal_Tanggal(idLapangan, tanggal);
+    }
+
+    // Sekarang butuh idJadwal DAN memberId
     public Booking buatBooking(Integer idJadwal, Long memberId) {
 
         Jadwal jadwal = jadwalRepository.findById(idJadwal).orElse(null);
-
         if (jadwal == null) {
             throw new RuntimeException("Jadwal tidak ditemukan.");
         }
@@ -48,28 +56,34 @@ public class BookingService {
             throw new RuntimeException("Maaf, slot jadwal ini sudah dibooking.");
         }
 
+        Member member = memberRepository.findById(memberId).orElse(null);
+        if (member == null) {
+            throw new RuntimeException("Member tidak ditemukan.");
+        }
+
         jadwal.setIsAvailable(false);
         jadwalRepository.save(jadwal);
 
         Booking booking = new Booking();
         booking.setJadwal(jadwal);
+        booking.setMember(member);
         booking.setTanggalDibuat(LocalDateTime.now());
         booking.setStatus("Dipesan");
 
         return bookingRepository.save(booking);
     }
 
-    // Reset booking untuk satu lapangan & tanggal tertentu
     public void resetBookingByLapanganDanTanggal(Integer idLapangan, LocalDate tanggal) {
 
-        List<Jadwal> daftarJadwal = jadwalRepository.findByLapangan_IdLapanganAndTanggal(idLapangan, tanggal);
+        List<Booking> bookingTerkait = bookingRepository
+                .findByJadwal_Lapangan_IdLapanganAndJadwal_Tanggal(idLapangan, tanggal);
 
-        for (Jadwal jadwal : daftarJadwal) {
-            List<Booking> bookingTerkait = bookingRepository.findByJadwal_IdJadwal(jadwal.getIdJadwal());
-            bookingRepository.deleteAll(bookingTerkait);
-
+        for (Booking booking : bookingTerkait) {
+            Jadwal jadwal = booking.getJadwal();
             jadwal.setIsAvailable(true);
             jadwalRepository.save(jadwal);
         }
+
+        bookingRepository.deleteAll(bookingTerkait);
     }
 }
