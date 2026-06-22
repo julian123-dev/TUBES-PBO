@@ -16,7 +16,7 @@
 <div class="container">
 
     <div class="card">
-        <div class="card-title">🏟️ Pilih Lapangan</div>
+        <div class="card-title">Pilih Lapangan</div>
 
         <div class="form-group" style="margin-bottom: 20px;">
             <label for="pilihLapangan">Jenis Lapangan</label>
@@ -61,17 +61,16 @@
     </div>
 
     <div class="card">
-        <div class="card-title">🎁 Rekomendasi Paket</div>
+        <div class="card-title">Rekomendasi Paket</div>
         <div class="paket-grid">
             <div th:each="p, i : ${paketList}" class="paket-card"
                  onclick="pilihPaket(this)"
                  th:data-id="${p.idPaket}">
-                <div class="paket-badge" th:classappend="${i.index == 0} ? 'badge-a' : (${i.index == 1} ? 'badge-b' : 'badge-c')">
-                    <span th:text="${i.index == 0} ? 'A' : (${i.index == 1} ? 'B' : 'C')">A</span>
-                    <div class="paket-stars">
-                        <span th:each="s : ${#numbers.sequence(1, i.index + 1)}">⭐</span>
-                    </div>
-                </div>
+
+                <img th:if="${i.index == 0}" th:src="@{/images/paketA.jpeg}" alt="Paket A" class="paket-img">
+                <img th:if="${i.index == 1}" th:src="@{/images/paketB.jpeg}" alt="Paket B" class="paket-img">
+                <img th:if="${i.index == 2}" th:src="@{/images/paketC.jpeg}" alt="Paket C" class="paket-img">
+
                 <div class="paket-nama" th:text="${p.namaPaket}"></div>
                 <div class="paket-harga" th:text="'Rp ' + ${#numbers.formatInteger(p.harga, 1, 'COMMA')}"></div>
                 <div class="paket-desc" th:text="${p.deskripsi}"></div>
