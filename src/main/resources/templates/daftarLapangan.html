@@ -53,7 +53,6 @@
         .venue-overlay h3 { margin: 0 0 10px; font-size: 18px; }
         .venue-overlay p { margin: 4px 0; font-size: 14px; }
         .venue-overlay .status-aktif { color: #81c784; font-weight: bold; }
-        .venue-overlay .status-nonaktif { color: #e57373; font-weight: bold; }
         .venue-overlay .btn-jadwal {
             margin-top: 14px;
             display: inline-block;
@@ -74,31 +73,115 @@
     <h1>Daftar Lapangan</h1>
 
     <div class="venue-grid">
-        <div class="venue-card" th:each="lapangan : ${lapanganList}">
-            <img th:src="@{/images/{img}(img=${lapangan.foto})}" th:alt="${lapangan.nama}">
-            
+
+        <!-- Futsal A - ID 2 -->
+        <div class="venue-card">
+            <img th:src="@{/images/futsal1.jpg}" alt="Futsal">
             <div class="venue-body">
                 <div class="venue-label">Lapangan</div>
-                <div class="venue-name" th:text="${lapangan.nama}">Nama Lapangan</div>
-                <div class="venue-meta" th:text="${lapangan.tipe} + ' • ' + ${lapangan.lokasi}">Tipe • Lokasi</div>
-                <div class="venue-price">
-                    Mulai <strong th:text="'Rp ' + ${#numbers.formatInteger(lapangan.harga, 3, 'POINT')}">Rp 0</strong> /jam
-                </div>
+                <div class="venue-name">Lapangan Futsal A</div>
+                <div class="venue-meta">Futsal • Gedung Utama Lt.1</div>
+                <div class="venue-price">Mulai <strong>Rp 60.000</strong> /jam</div>
             </div>
-            
             <div class="venue-overlay">
-                <h3 th:text="${lapangan.nama}">Nama Lapangan</h3>
-                <p th:text="${lapangan.lokasi}">Lokasi</p>
-                <p th:text="'Jam: ' + ${lapangan.jamOperasional}">Jam: 00:00 - 00:00</p>
-                <p>Status: 
-                    <span th:class="${lapangan.aktif} ? 'status-aktif' : 'status-nonaktif'" 
-                          th:text="${lapangan.aktif} ? 'Aktif' : 'Non-Aktif'">
-                        Aktif
-                    </span>
-                </p>
-                <a class="btn-jadwal" th:href="@{/jadwal/{id}(id=${lapangan.id})}">Lihat Jadwal</a>
+                <h3>Lapangan Futsal A</h3>
+                <p>Gedung Utama Lt.1</p>
+                <p>Jam: 08:00 - 23:00</p>
+                <p>Status: <span class="status-aktif">Aktif</span></p>
+                <a class="btn-jadwal" th:href="@{/jadwal/2}">Lihat Jadwal</a>
             </div>
         </div>
+
+        <!-- Futsal B - ID 6 -->
+        <div class="venue-card">
+            <img th:src="@{/images/futsal2.png}" alt="Futsal">
+            <div class="venue-body">
+                <div class="venue-label">Lapangan</div>
+                <div class="venue-name">Lapangan Futsal B</div>
+                <div class="venue-meta">Futsal • Gedung Utama Lt.1</div>
+                <div class="venue-price">Mulai <strong>Rp 60.000</strong> /jam</div>
+            </div>
+            <div class="venue-overlay">
+                <h3>Lapangan Futsal B</h3>
+                <p>Gedung Utama Lt.1</p>
+                <p>Jam: 08:00 - 23:00</p>
+                <p>Status: <span class="status-aktif">Aktif</span></p>
+                <a class="btn-jadwal" th:href="@{/jadwal/6}">Lihat Jadwal</a>
+            </div>
+        </div>
+
+        <!-- Basket A - ID 3 -->
+        <div class="venue-card">
+            <img th:src="@{/images/basket1.jpg}" alt="Basket">
+            <div class="venue-body">
+                <div class="venue-label">Lapangan</div>
+                <div class="venue-name">Lapangan Basket A</div>
+                <div class="venue-meta">Basket • Gedung Utama Lt.2</div>
+                <div class="venue-price">Mulai <strong>Rp 70.000</strong> /jam</div>
+            </div>
+            <div class="venue-overlay">
+                <h3>Lapangan Basket A</h3>
+                <p>Gedung Utama Lt.2</p>
+                <p>Jam: 06:00 - 21:00</p>
+                <p>Status: <span class="status-aktif">Aktif</span></p>
+                <a class="btn-jadwal" th:href="@{/jadwal/3}">Lihat Jadwal</a>
+            </div>
+        </div>
+
+        <!-- Basket B - ID 7 -->
+        <div class="venue-card">
+            <img th:src="@{/images/basket2.png}" alt="Basket">
+            <div class="venue-body">
+                <div class="venue-label">Lapangan</div>
+                <div class="venue-name">Lapangan Basket B</div>
+                <div class="venue-meta">Basket • Gedung Utama Lt.2</div>
+                <div class="venue-price">Mulai <strong>Rp 70.000</strong> /jam</div>
+            </div>
+            <div class="venue-overlay">
+                <h3>Lapangan Basket B</h3>
+                <p>Gedung Utama Lt.2</p>
+                <p>Jam: 06:00 - 21:00</p>
+                <p>Status: <span class="status-aktif">Aktif</span></p>
+                <a class="btn-jadwal" th:href="@{/jadwal/7}">Lihat Jadwal</a>
+            </div>
+        </div>
+
+        <!-- Badminton A - ID 4 -->
+        <div class="venue-card">
+            <img th:src="@{/images/badminton1.jpg}" alt="Badminton">
+            <div class="venue-body">
+                <div class="venue-label">Lapangan</div>
+                <div class="venue-name">Lapangan Badminton A</div>
+                <div class="venue-meta">Badminton • Gedung Utama Lt.3</div>
+                <div class="venue-price">Mulai <strong>Rp 35.000</strong> /jam</div>
+            </div>
+            <div class="venue-overlay">
+                <h3>Lapangan Badminton A</h3>
+                <p>Gedung Utama Lt.3</p>
+                <p>Jam: 07:00 - 22:00</p>
+                <p>Status: <span class="status-aktif">Aktif</span></p>
+                <a class="btn-jadwal" th:href="@{/jadwal/4}">Lihat Jadwal</a>
+            </div>
+        </div>
+
+        <!-- Badminton B - ID 8 -->
+        <div class="venue-card">
+            <img th:src="@{/images/badminton2.jpg}" alt="Badminton">
+            <div class="venue-body">
+                <div class="venue-label">Lapangan</div>
+                <div class="venue-name">Lapangan Badminton B</div>
+                <div class="venue-meta">Badminton • Gedung Utama Lt.3</div>
+                <div class="venue-price">Mulai <strong>Rp 35.000</strong> /jam</div>
+            </div>
+            <div class="venue-overlay">
+                <h3>Lapangan Badminton B</h3>
+                <p>Gedung Utama Lt.3</p>
+                <p>Jam: 07:00 - 22:00</p>
+                <p>Status: <span class="status-aktif">Aktif</span></p>
+                <a class="btn-jadwal" th:href="@{/jadwal/8}">Lihat Jadwal</a>
+            </div>
+        </div>
+
     </div>
 </div>
 
