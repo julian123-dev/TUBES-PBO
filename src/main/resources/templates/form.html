@@ -54,9 +54,9 @@
             border-radius: 5px;
             font-size: 14px;
         }
-        .btn-group {
-            display: flex;
-            gap: 10px;
+        input[readonly] {
+            background-color: #f4f4f8;
+            color: #555;
         }
         button, .btn-back {
             border: none;
@@ -85,6 +85,12 @@
             color: #e94560;
             margin-bottom: 10px;
         }
+        .info-harga {
+            font-size: 12px;
+            color: #888;
+            margin-top: -15px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -104,11 +110,24 @@
         <input type="text" th:field="*{namaPelanggan}" required>
 
         <label>Jenis Layanan</label>
-        <select id="jenisLayanan" th:field="*{jenisLayanan}" onchange="isiHarga()">
+        <select id="jenisLayanan" th:field="*{jenisLayanan}" onchange="hitungTotal()">
             <option value="" disabled selected>-- Pilih Layanan --</option>
-            <option value="Sewa Lapangan Futsal" data-harga="60000">Sewa Lapangan Futsal</option>
-            <option value="Sewa Lapangan Badminton" data-harga="35000">Sewa Lapangan Badminton</option>
-            <option value="Sewa Lapangan Basket" data-harga="70000">Sewa Lapangan Basket</option>
+            <option value="Sewa Lapangan Futsal A" data-harga="60000">Sewa Lapangan Futsal A</option>
+            <option value="Sewa Lapangan Futsal B" data-harga="60000">Sewa Lapangan Futsal B</option>
+            <option value="Sewa Lapangan Badminton A" data-harga="35000">Sewa Lapangan Badminton A</option>
+            <option value="Sewa Lapangan Badminton B" data-harga="35000">Sewa Lapangan Badminton B</option>
+            <option value="Sewa Lapangan Basket A" data-harga="70000">Sewa Lapangan Basket A</option>
+            <option value="Sewa Lapangan Basket B" data-harga="70000">Sewa Lapangan Basket B</option>
+        </select>
+        <p class="info-harga" id="hargaPerJam"></p>
+
+        <label>Durasi (jam)</label>
+        <select id="durasi" onchange="hitungTotal()">
+            <option value="1">1 Jam</option>
+            <option value="2">2 Jam</option>
+            <option value="3">3 Jam</option>
+            <option value="4">4 Jam</option>
+            <option value="5">5 Jam</option>
         </select>
 
         <label>Metode Pembayaran</label>
@@ -119,30 +138,39 @@
         </select>
 
         <label>Jumlah Pembayaran</label>
-        <input type="text" id="jumlahTampil" placeholder="Otomatis terisi setelah pilih layanan" readonly>
+        <input type="text" id="jumlahTampil" placeholder="Otomatis terisi setelah pilih layanan & durasi" readonly>
         <input type="hidden" id="jumlahAsli" th:field="*{jumlah}">
 
         <script>
-            function isiHarga() {
+            function hitungTotal() {
                 var select = document.getElementById('jenisLayanan');
                 var opsiTerpilih = select.options[select.selectedIndex];
                 var harga = opsiTerpilih.getAttribute('data-harga');
+                var durasi = parseInt(document.getElementById('durasi').value, 10);
 
                 if (harga) {
                     var hargaNumber = parseInt(harga, 10);
-                    document.getElementById('jumlahAsli').value = hargaNumber;
+                    var total = hargaNumber * durasi;
+
+                    document.getElementById('jumlahAsli').value = total;
                     document.getElementById('jumlahTampil').value =
-                        'Rp ' + hargaNumber.toLocaleString('id-ID');
+                        'Rp ' + total.toLocaleString('id-ID');
+                    document.getElementById('hargaPerJam').textContent =
+                        'Rp ' + hargaNumber.toLocaleString('id-ID') + ' / jam × ' + durasi + ' jam';
                 }
             }
         </script>
 
-        <div class="btn-group">
+        <div style="text-align: center; margin-top: 10px;">
             <button type="submit" class="btn-save">Simpan</button>
-            <a href="/" class="btn-back">Kembali</a>
         </div>
 
     </form>
+
+    <div style="text-align: center; margin-top: 16px;">
+        <a href="#" class="btn-back">← Kembali ke Halaman</a>
+    </div>
+
 </div>
 
 </body>
