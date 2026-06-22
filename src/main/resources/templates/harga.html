@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harga Lapangan - SportSync</title>
+    <link rel="stylesheet" th:href="@{/css/harga-lapangan.css}">
+</head>
+<body>
+
+<div class="navbar">
+    <h1> SportSync</h1>
+    <span>/ Harga Lapangan</span>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-title">🏟️ Pilih Lapangan</div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="pilihLapangan">Jenis Lapangan</label>
+            <select id="pilihLapangan" onchange="gantiLapangan()">
+                <option value="">-- Pilih Lapangan --</option>
+                <option th:each="l : ${lapanganList}" 
+                        th:value="${l.idLapangan}" 
+                        th:text="${l.nama}">
+                </option>
+            </select>
+        </div>
+
+        <div id="info-lapangan" style="display:none;">
+            <div class="info-harga" id="tampilHarga"></div>
+            <div class="info-sub" id="tampilJam"></div>
+        </div>
+
+        <div id="info-kosong">
+            <p style="color:#aaa; font-size:14px;">Silakan pilih lapangan terlebih dahulu.</p>
+        </div>
+
+        <div class="form-grid" id="form-jam" style="display:none;">
+            <div class="form-group">
+                <label for="jamMulai">Jam Mulai</label>
+                <input type="time" id="jamMulai" onchange="hitungTotal()">
+            </div>
+            <div class="form-group">
+                <label for="jamSelesai">Jam Selesai</label>
+                <input type="time" id="jamSelesai" onchange="hitungTotal()">
+                <span class="error-msg" id="errorMsg">Jam selesai harus setelah jam mulai</span>
+            </div>
+        </div>
+
+        <div class="total-box" id="total-box" style="display:none;">
+            <span class="total-label">Total Harga (<span id="durasiJam">0</span> jam):</span>
+            <span class="total-nilai" id="totalHarga">Rp 0</span>
+        </div>
+
+        <div id="btn-bayar-wrapper" style="display:none; margin-top:16px; text-align:right;">
+            <a href="/pembayaran" id="linkBayar" class="btn-bayar">Bayar Sekarang</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🎁 Rekomendasi Paket</div>
+        <div class="paket-grid">
+            <div class="paket-card" th:each="p, i : ${paketList}" onclick="pilihPaket(this)" th:data-id="${p.idPaket}">
+                <img th:if="${i.index == 0}" th:src="@{/images/paket-a.svg}" alt="Paket A">
+                <img th:if="${i.index == 1}" th:src="@{/images/paket-b.svg}" alt="Paket B">
+                <img th:if="${i.index == 2}" th:src="@{/images/paket-c.svg}" alt="Paket C">
+                <div class="paket-nama" th:text="${p.namaPaket}"></div>
+                <div class="paket-harga" th:text="'Rp ' + ${#numbers.formatInteger(p.harga, 1, 'COMMA')}"></div>
+                <div class="paket-desc" th:text="${p.deskripsi}"></div>
+                <div class="paket-durasi" th:text="'Durasi: ' + ${p.durasiHari} + ' hari'"></div>
+            </div>
+            <div th:if="${#lists.isEmpty(paketList)}" class="empty-state">
+                Belum ada paket tersedia
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            const dataPaket = /*[[${paketList}]]*/ [];
+            const listLapanganDB = /*[[${lapanganList}]]*/ [];
+        </script>
+    </div>
+
+</div>
+
+<script>
+    // SOLUSI 2: Object dataLapangan sekarang diisi otomatis dari database, bukan hardcode lagi
+    const dataLapangan = {};
+    listLapanganDB.forEach(l => {
+        dataLapangan[l.idLapangan] = {
+            nama: l.nama,
+            harga: l.hargaPerJam,
+            jamMulai: l.jamBuka || '08:00',
+            jamSelesai: l.jamTutup || '23:59'
+        };
+    });
+
+    let hargaPerJamAktif = 0;
+    let idPaketTerpilih = ""; // Tracker untuk paket yang dipilih
+
+    function gantiLapangan() {
+        const pilihan = document.getElementById('pilihLapangan').value;
+        const infoLapangan = document.getElementById('info-lapangan');
+        const infoKosong = document.getElementById('info-kosong');
+        const formJam = document.getElementById('form-jam');
+        const totalBox = document.getElementById('total-box');
+
+        if (!pilihan) {
+            infoLapangan.style.display = 'none';
+            infoKosong.style.display = 'block';
+            formJam.style.display = 'none';
+            totalBox.style.display = 'none';
+            return;
+        }
+
+        const data = dataLapangan[pilihan];
+        hargaPerJamAktif = data.harga;
+
+        document.getElementById('tampilHarga').textContent = 'Rp ' + data.harga.toLocaleString('id-ID') + ' / jam';
+        document.getElementById('tampilJam').textContent = 'Jam operasional: ' + data.jamMulai + ' – ' + data.jamSelesai;
+
+        const inputMulai = document.getElementById('jamMulai');
+        const inputSelesai = document.getElementById('jamSelesai');
+        inputMulai.min = data.jamMulai;
+        inputMulai.max = data.jamSelesai;
+        inputSelesai.min = data.jamMulai;
+        inputSelesai.max = data.jamSelesai;
+        inputMulai.value = '';
+        inputSelesai.value = '';
+
+        infoLapangan.style.display = 'block';
+        infoKosong.style.display = 'none';
+        formJam.style.display = 'grid';
+        totalBox.style.display = 'flex';
+
+        document.getElementById('totalHarga').textContent = 'Rp 0';
+        document.getElementById('durasiJam').textContent = '0';
+        document.getElementById('errorMsg').style.display = 'none';
+
+        updateHargaPaket();
+    }
+
+    function updateHargaPaket() {
+        const kartuPaket = document.querySelectorAll('.paket-card');
+        kartuPaket.forEach((card, i) => {
+            if (!dataPaket[i]) return;
+
+            const durasi = dataPaket[i].durasiHari;
+            let harga = durasi * hargaPerJamAktif;
+
+            const desc = dataPaket[i].deskripsi || '';
+            const matchDiskon = desc.match(/diskon\s+(\d+)%/i);
+            if (matchDiskon) {
+                const persen = parseInt(matchDiskon[1]);
+                harga = harga * (1 - persen / 100);
+            }
+
+            const elHarga = card.querySelector('.paket-harga');
+            if (elHarga) {
+                elHarga.textContent = 'Rp ' + Math.round(harga).toLocaleString('id-ID');
+            }
+        });
+    }
+
+    function hitungTotal() {
+        const pilihanLapangan = document.getElementById('pilihLapangan').value;
+        const jamMulai = document.getElementById('jamMulai').value;
+        const jamSelesai = document.getElementById('jamSelesai').value;
+        const errorMsg = document.getElementById('errorMsg');
+        const totalEl = document.getElementById('totalHarga');
+        const durasiEl = document.getElementById('durasiJam');
+        const btnBayar = document.getElementById('btn-bayar-wrapper');
+
+        if (!jamMulai || !jamSelesai) {
+            btnBayar.style.display = 'none';
+            return;
+        }
+
+        const [jM, mM] = jamMulai.split(':').map(Number);
+        const [jS, mS] = jamSelesai.split(':').map(Number);
+        const totalMenit = (jS * 60 + mS) - (jM * 60 + mM);
+
+        if (totalMenit <= 0) {
+            errorMsg.style.display = 'block';
+            totalEl.textContent = 'Rp 0';
+            durasiEl.textContent = '0';
+            btnBayar.style.display = 'none';
+            return;
+        }
+
+        errorMsg.style.display = 'none';
+
+        const totalJam = totalMenit / 60;
+        const total = totalJam * hargaPerJamAktif;
+
+        durasiEl.textContent = totalJam;
+        totalEl.textContent = 'Rp ' + Math.round(total).toLocaleString('id-ID');
+
+        btnBayar.style.display = 'block';
+
+        // SOLUSI 3: Update URL link pembayaran secara real-time membawa parameter data ke Julian
+        updateLinkPembayaran(pilihanLapangan, jamMulai, jamSelesai, Math.round(total));
+    }
+
+    // Fungsi tambahan untuk menyusun URL parameter secara aman
+    function updateLinkPembayaran(idLapangan, mulai, selesai, totalHarga) {
+        const linkBayar = document.getElementById('linkBayar');
+        let url = `/pembayaran?idLapangan=${idLapangan}&jamMulai=${mulai}&jamSelesai=${selesai}&total=${totalHarga}`;
+        if (idPaketTerpilih) {
+            url += `&idPaket=${idPaketTerpilih}`;
+        }
+        linkBayar.href = url;
+    }
+
+    function pilihPaket(card) {
+        document.querySelectorAll('.paket-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        
+        // Simpan ID paket terpilih
+        idPaketTerpilih = card.getAttribute('data-id');
+        
+        // Picu hitung ulang total jika jam sudah terisi agar URL ter-update membawa info paket
+        const jamMulai = document.getElementById('jamMulai').value;
+        const jamSelesai = document.getElementById('jamSelesai').value;
+        if (jamMulai && jamSelesai) {
+            hitungTotal();
+        }
+    }
+</script>
+
+</body>
+</html>
