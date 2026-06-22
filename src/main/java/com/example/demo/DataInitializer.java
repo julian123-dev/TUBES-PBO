@@ -6,7 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.example.demo.entity.Member;
-import com.example.demo.entity.Lapangan;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.LapanganRepository;
 
