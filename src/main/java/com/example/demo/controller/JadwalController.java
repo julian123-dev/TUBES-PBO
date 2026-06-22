@@ -7,12 +7,11 @@ import com.example.demo.entity.Member;
 import com.example.demo.service.BookingService;
 import com.example.demo.service.JadwalService;
 import com.example.demo.service.LapanganService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,8 +31,8 @@ public class JadwalController {
 
     @GetMapping("/{idLapangan}")
     public String lihatJadwal(@PathVariable Integer idLapangan,
-                               @RequestParam(required = false) String tanggal,
-                               Model model) {
+                              @RequestParam(required = false) String tanggal,
+                              Model model) {
 
         Lapangan lapangan = lapanganService.lihatDetailLapangan(idLapangan)
                 .orElseThrow(() -> new RuntimeException("Lapangan tidak ditemukan"));
@@ -44,21 +43,25 @@ public class JadwalController {
 
         jadwalService.generateSlotHarian(lapangan, tgl);
 
-        List<Jadwal> daftarJadwal = jadwalService.getJadwalByLapanganDanTanggal(lapangan, tgl);
-        List<Booking> daftarBooking = bookingService.getBookingByLapanganDanTanggal(idLapangan, tgl);
+        List<Jadwal> daftarJadwal =
+                jadwalService.getJadwalByLapanganDanTanggal(lapangan, tgl);
+
+        List<Booking> daftarBooking =
+                bookingService.getBookingByLapanganDanTanggal(idLapangan, tgl);
 
         model.addAttribute("lapangan", lapangan);
         model.addAttribute("daftarJadwal", daftarJadwal);
         model.addAttribute("daftarBooking", daftarBooking);
         model.addAttribute("tanggal", tgl.toString());
 
-        return "Lapangan/daftarJadwal";
+        // ✅ FIX UTAMA DI SINI
+        return "lapangan/daftarJadwal";
     }
 
     @PostMapping("/booking")
     public String prosesBooking(@RequestParam List<Integer> idJadwal,
-                                 @RequestParam Integer idLapangan,
-                                 HttpSession session) {
+                                @RequestParam Integer idLapangan,
+                                HttpSession session) {
 
         Member member = (Member) session.getAttribute("member");
 
@@ -69,13 +72,21 @@ public class JadwalController {
         for (Integer id : idJadwal) {
             bookingService.buatBooking(id, member.getId());
         }
+
         return "redirect:/jadwal/" + idLapangan + "?success=true";
     }
 
     @PostMapping("/reset")
     public String resetBooking(@RequestParam Integer idLapangan,
-                                @RequestParam String tanggal) {
-        bookingService.resetBookingByLapanganDanTanggal(idLapangan, LocalDate.parse(tanggal));
-        return "redirect:/jadwal/" + idLapangan + "?tanggal=" + tanggal + "&success=reset";
+                               @RequestParam String tanggal) {
+
+        bookingService.resetBookingByLapanganDanTanggal(
+                idLapangan,
+                LocalDate.parse(tanggal)
+        );
+
+        return "redirect:/jadwal/" + idLapangan
+                + "?tanggal=" + tanggal
+                + "&success=reset";
     }
 }
