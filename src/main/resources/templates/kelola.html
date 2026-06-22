@@ -123,63 +123,72 @@
         a {
             color: #0f3460;
         }
+        .kosong {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
 
 <nav>
     <h2><a href="/" style="color:white; text-decoration:none;">SportSync</a></h2>
-    <a href="#" style="color:white; text-decoration:none; font-size:14px; background-color:#0f3460; padding:8px 16px; border-radius:5px;">← Kembali ke Halaman</a>
+    <a href="/" style="color:white; text-decoration:none; font-size:14px; background-color:#0f3460; padding:8px 16px; border-radius:5px;">← Kembali ke Halaman</a>
 </nav>
 
 <div class="container">
 
     <div class="card">
-        <h2>Data Member</h2>
+        <h2>📋 Data Member</h2>
 
         <table>
             <thead class="theme-member">
-            <tr>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>No HP</th>
-                <th>Jenis Kelamin</th>
-                <th>Tanggal Lahir</th>
-                <th>Status</th>
-                <th>Umur</th>
-            </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>No HP</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Tanggal Lahir</th>
+                    <th>Status</th>
+                    <th>Umur</th>
+                </tr>
             </thead>
 
             <!-- ✅ PERBAIKAN DI SINI -->
             <tbody>
-                <tr th:each="m : ${daftarMember}">  <!-- ← daftarMember -->
+                <tr th:each="m : ${daftarMember}">   <!-- ✅ daftarMember -->
                     <td th:text="${m.id}"></td>
-                    <td th:text="${m.nama}"></td>    <!-- ← nama -->
+                    <td th:text="${m.nama}"></td>    <!-- ✅ nama -->
                     <td th:text="${m.email}"></td>
-                    <td th:text="${m.noTelepon}"></td> <!-- ← noTelepon -->
+                    <td th:text="${m.noTelepon}"></td> <!-- ✅ noTelepon -->
                     <td th:text="${m.jenisKelamin}"></td>
                     <td th:text="${m.tanggalLahir}"></td>
                     <td th:text="${m.status}"></td>
-                    <td th:text="${#temporals.year(m.tanggalLahir)}"></td> <!-- ← hitung umur -->
+                    <td th:text="${#temporals.year(m.tanggalLahir)}"></td> <!-- ✅ hitung umur -->
+                </tr>
+                <tr th:if="${#lists.isEmpty(daftarMember)}">
+                    <td colspan="8" class="kosong">📭 Belum ada data member.</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <div class="card">
-        <h2>History Pembayaran</h2>
+        <h2>📜 History Pembayaran</h2>
 
         <table>
             <thead class="theme-history">
-            <tr>
-                <th>ID</th>
-                <th>Nama Member</th>
-                <th>Metode Pembayaran</th>
-                <th>Jumlah</th>
-                <th>Tanggal</th>
-                <th>Aksi</th>
-            </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Member</th>
+                    <th>Metode Pembayaran</th>
+                    <th>Jumlah</th>
+                    <th>Tanggal</th>
+                    <th>Aksi</th>
+                </tr>
             </thead>
 
             <tbody>
