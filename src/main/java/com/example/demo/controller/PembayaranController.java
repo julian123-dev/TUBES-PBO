@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.entity.History;
 import com.example.demo.entity.Pembayaran;
 import com.example.demo.service.HistoryService;
 import com.example.demo.service.PembayaranService;
@@ -33,7 +34,7 @@ public class PembayaranController {
                 "listHistory",
                 historyService.getAllHistory());
 
-        return "index";
+        return "kelola";
     }
 
     @GetMapping("/tambah")
@@ -62,6 +63,34 @@ public class PembayaranController {
     public String hapus(@PathVariable Long id) {
 
         pembayaranService.hapusPembayaran(id);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/history/edit/{id}")
+    public String editHistory(@PathVariable Long id, Model model) {
+
+        History history = historyService.getHistoryById(id);
+
+        model.addAttribute("history", history);
+
+        return "edit-history";
+    }
+
+    @PostMapping("/history/update/{id}")
+    public String updateHistory(
+            @PathVariable Long id,
+            @ModelAttribute History history) {
+
+        historyService.updateHistory(id, history);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/history/hapus/{id}")
+    public String hapusHistory(@PathVariable Long id) {
+
+        historyService.hapusHistory(id);
 
         return "redirect:/";
     }

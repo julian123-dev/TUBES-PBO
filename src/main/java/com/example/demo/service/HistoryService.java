@@ -21,4 +21,24 @@ public class HistoryService {
     public void simpanHistory(History history) {
         historyRepository.save(history);
     }
+
+    public History getHistoryById(Long id) {
+        return historyRepository.findById(id).orElse(null);
+    }
+
+    public void updateHistory(Long id, History dataBaru) {
+        History history = historyRepository.findById(id).orElse(null);
+
+        if (history != null) {
+            history.setNamaMember(dataBaru.getNamaMember());
+            history.setMetodePembayaran(dataBaru.getMetodePembayaran());
+            history.setJumlah(dataBaru.getJumlah());
+
+            historyRepository.save(history);
+        }
+    }
+
+    public void hapusHistory(Long id) {
+        historyRepository.deleteById(id);
+    }
 }

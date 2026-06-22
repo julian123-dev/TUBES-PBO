@@ -72,6 +72,23 @@
             background-color: #e94560;
             color: white;
         }
+        .btn-edit-sm {
+            display: inline-block;
+            background-color: transparent;
+            color: #533483;
+            border: 1px solid #533483;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+            margin-right: 6px;
+        }
+        .btn-edit-sm:hover {
+            background-color: #533483;
+            color: white;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -112,43 +129,11 @@
 
 <nav>
     <h2><a href="/" style="color:white; text-decoration:none;">SportSync</a></h2>
+    <a href="#" style="color:white; text-decoration:none; font-size:14px; background-color:#0f3460; padding:8px 16px; border-radius:5px;">← Kembali ke Halaman</a>
 </nav>
 
 <div class="container">
 
-    <div class="card">
-        <h2>Data Pembayaran</h2>
-
-        <a href="/tambah" class="btn">Bayar Sekarang</a>
-
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nama Pelanggan</th>
-                <th>Jenis Layanan</th>
-                <th>Metode</th>
-                <th>Jumlah</th>
-                <th>Aksi</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr th:each="p : ${listPembayaran}">
-                <td th:text="${p.id}"></td>
-                <td th:text="${p.namaPelanggan}"></td>
-                <td th:text="${p.jenisLayanan}"></td>
-                <td th:text="${p.metodePembayaran}"></td>
-                <td th:text="${'Rp ' + #numbers.formatDecimal(p.jumlah, 0, 'COMMA', 0, 'POINT')}"></td>
-                <td>
-                    <a th:href="@{/hapus/{id}(id=${p.id})}" class="btn-danger-sm">
-                        Hapus
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 
     <div class="card">
         <h2>Data Member</h2>
@@ -193,6 +178,7 @@
                 <th>Metode Pembayaran</th>
                 <th>Jumlah</th>
                 <th>Tanggal</th>
+                <th>Aksi</th>
             </tr>
             </thead>
 
@@ -201,11 +187,20 @@
                 <td th:text="${h.id}"></td>
                 <td th:text="${h.namaMember}"></td>
                 <td th:text="${h.metodePembayaran}"></td>
-                <td th:text="${'Rp ' + #numbers.formatDecimal(h.jumlah * 1000, 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${'Rp ' + #numbers.formatDecimal(h.jumlah, 0, 'COMMA', 0, 'POINT')}"></td>
                 <td th:text="${#temporals.format(h.tanggal,'dd-MM-yyyy (HH:mm:ss)')}"></td>
+                <td>
+                    <a th:href="@{/history/edit/{id}(id=${h.id})}" class="btn-edit-sm">Edit</a>
+                    <a th:href="@{/history/hapus/{id}(id=${h.id})}" class="btn-danger-sm">Hapus</a>
+                </td>
             </tr>
             </tbody>
         </table>
+
+        <div style="text-align: center; margin-top: 24px;">
+            <a href="/tambah" class="btn">+ Catat Transaksi</a>
+        </div>
+
     </div>
 
 </div>

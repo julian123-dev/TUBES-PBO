@@ -22,22 +22,24 @@ public class PembayaranService {
         return pembayaranRepository.findAll();
     }
 
-    public void simpanPembayaran(Pembayaran pembayaran) {
+    public Pembayaran simpanPembayaran(Pembayaran pembayaran) {
 
-        pembayaranRepository.save(pembayaran);
+        Pembayaran hasil = pembayaranRepository.save(pembayaran);
 
         History history = new History();
 
         history.setNamaMember(
-                pembayaran.getNamaPelanggan());
+                hasil.getNamaPelanggan());
 
         history.setMetodePembayaran(
-                pembayaran.getMetodePembayaran());
+                hasil.getMetodePembayaran());
 
         history.setJumlah(
-                pembayaran.getJumlah());
+                hasil.getJumlah());
 
         historyService.simpanHistory(history);
+
+        return hasil;
     }
 
     public void hapusPembayaran(Long id) {

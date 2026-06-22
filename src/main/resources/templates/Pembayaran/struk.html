@@ -178,12 +178,17 @@
             <span th:text="${'Rp ' + #numbers.formatDecimal(pembayaran.jumlah, 0, 'COMMA', 0, 'POINT')}"></span>
         </div>
 
-        <div class="btn-group">
+
+        <div style="text-align: center; margin-top: 20px;">
             <button class="btn-print" onclick="window.print()">Cetak Struk</button>
-            <a href="/" class="btn-back">Kembali</a>
         </div>
 
     </div>
+
+    <div style="text-align: center; margin-top: 16px;">
+        <a href="/lapangan" style="color:white; text-decoration:none; font-size:14px; background-color:#0f3460; padding:8px 16px; border-radius:5px;">← Kembali ke Halaman</a>
+    </div>
+
 </div>
 
 </body>
