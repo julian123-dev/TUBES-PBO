@@ -123,86 +123,77 @@
         a {
             color: #0f3460;
         }
-        .kosong {
-            text-align: center;
-            padding: 30px;
-            color: #999;
-            font-style: italic;
-        }
     </style>
 </head>
 <body>
 
 <nav>
     <h2><a href="/" style="color:white; text-decoration:none;">SportSync</a></h2>
-    <a href="/" style="color:white; text-decoration:none; font-size:14px; background-color:#0f3460; padding:8px 16px; border-radius:5px;">← Kembali ke Halaman</a>
+    <a href="#" style="color:white; text-decoration:none; font-size:14px; background-color:#0f3460; padding:8px 16px; border-radius:5px;">← Kembali ke Halaman</a>
 </nav>
 
 <div class="container">
 
+
     <div class="card">
-        <h2>📋 Data Member</h2>
+        <h2>Data Member</h2>
 
         <table>
             <thead class="theme-member">
-                <tr>
-                    <th>ID</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>No HP</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Status</th>
-                    <th>Umur</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>No HP</th>
+                <th>Jenis Kelamin</th>
+                <th>Tanggal Lahir</th>
+                <th>Status</th>
+                <th>Umur</th>
+            </tr>
             </thead>
 
-            <!-- ✅ PERBAIKAN DI SINI -->
             <tbody>
-                <tr th:each="m : ${daftarMember}">   <!-- ✅ daftarMember -->
-                    <td th:text="${m.id}"></td>
-                    <td th:text="${m.nama}"></td>    <!-- ✅ nama -->
-                    <td th:text="${m.email}"></td>
-                    <td th:text="${m.noTelepon}"></td> <!-- ✅ noTelepon -->
-                    <td th:text="${m.jenisKelamin}"></td>
-                    <td th:text="${m.tanggalLahir}"></td>
-                    <td th:text="${m.status}"></td>
-                    <td th:text="${#temporals.year(m.tanggalLahir)}"></td> <!-- ✅ hitung umur -->
-                </tr>
-                <tr th:if="${#lists.isEmpty(daftarMember)}">
-                    <td colspan="8" class="kosong">📭 Belum ada data member.</td>
-                </tr>
+            <tr th:each="m : ${listMember}">
+                <td th:text="${m.id}"></td>
+                <td th:text="${m.name}"></td>
+                <td th:text="${m.email}"></td>
+                <td th:text="${m.phone}"></td>
+                <td th:text="${m.jenisKelamin}"></td>
+                <td th:text="${m.tanggalLahir}"></td>
+                <td th:text="${m.status}"></td>
+                <td th:text="${m.umur}"></td>
+            </tr>
             </tbody>
         </table>
     </div>
 
     <div class="card">
-        <h2>📜 History Pembayaran</h2>
+        <h2>History Pembayaran</h2>
 
         <table>
             <thead class="theme-history">
-                <tr>
-                    <th>ID</th>
-                    <th>Nama Member</th>
-                    <th>Metode Pembayaran</th>
-                    <th>Jumlah</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Nama Member</th>
+                <th>Metode Pembayaran</th>
+                <th>Jumlah</th>
+                <th>Tanggal</th>
+                <th>Aksi</th>
+            </tr>
             </thead>
 
             <tbody>
-                <tr th:each="h : ${listHistory}">
-                    <td th:text="${h.id}"></td>
-                    <td th:text="${h.namaMember}"></td>
-                    <td th:text="${h.metodePembayaran}"></td>
-                    <td th:text="${'Rp ' + #numbers.formatDecimal(h.jumlah, 0, 'COMMA', 0, 'POINT')}"></td>
-                    <td th:text="${#temporals.format(h.tanggal,'dd-MM-yyyy (HH:mm:ss)')}"></td>
-                    <td>
-                        <a th:href="@{/history/edit/{id}(id=${h.id})}" class="btn-edit-sm">Edit</a>
-                        <a th:href="@{/history/hapus/{id}(id=${h.id})}" class="btn-danger-sm">Hapus</a>
-                    </td>
-                </tr>
+            <tr th:each="h : ${listHistory}">
+                <td th:text="${h.id}"></td>
+                <td th:text="${h.namaMember}"></td>
+                <td th:text="${h.metodePembayaran}"></td>
+                <td th:text="${'Rp ' + #numbers.formatDecimal(h.jumlah, 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#temporals.format(h.tanggal,'dd-MM-yyyy (HH:mm:ss)')}"></td>
+                <td>
+                    <a th:href="@{/history/edit/{id}(id=${h.id})}" class="btn-edit-sm">Edit</a>
+                    <a th:href="@{/history/hapus/{id}(id=${h.id})}" class="btn-danger-sm">Hapus</a>
+                </td>
+            </tr>
             </tbody>
         </table>
 
