@@ -49,7 +49,7 @@ public class JadwalController {
         model.addAttribute("daftarBooking", daftarBooking);
         model.addAttribute("tanggal", tgl.toString());
 
-        return "jadwal/daftar";
+        return "Lapangan/daftarJadwal";
     }
 
     @PostMapping("/booking")

@@ -21,7 +21,7 @@ public class LapanganController {
         List<Lapangan> daftarLapangan = lapanganService.lihatDaftarLapangan();
         model.addAttribute("daftarLapangan", daftarLapangan);
         model.addAttribute("lapanganBaru", new Lapangan());
-        return "lapangan/daftar";
+        return "Lapangan/daftarLapangan";
     }
 
     @PostMapping("/simpan")

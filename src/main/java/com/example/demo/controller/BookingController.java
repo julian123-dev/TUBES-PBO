@@ -20,6 +20,6 @@ public class BookingController {
     public String daftarBooking(Model model) {
         List<Booking> daftarBooking = bookingService.getBookingByLapanganDanTanggal(null, null);
         model.addAttribute("daftarBooking", daftarBooking);
-        return "booking/daftarBooking";
+        return "Lapangan/daftarBooking";
     }
 }

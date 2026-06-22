@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kelola Booking - SportSync</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <h1>Kelola Booking (Admin)</h1>
+
+    <div class="search-bar">
+        <form th:action="@{/booking}" method="get" style="display:flex; gap:8px;">
+            <select name="status" onchange="this.form.submit()">
+                <option value="">-- Semua Status --</option>
+                <option value="Pending" th:selected="${status == 'Pending'}">Pending</option>
+                <option value="Dikonfirmasi" th:selected="${status == 'Dikonfirmasi'}">Dikonfirmasi</option>
+                <option value="Ditolak" th:selected="${status == 'Ditolak'}">Ditolak</option>
+                <option value="Dibatalkan" th:selected="${status == 'Dibatalkan'}">Dibatalkan</option>
+            </select>
+        </form>
+    </div>
+
+    <table th:if="${not #lists.isEmpty(daftarBooking)}">
+        <thead>
+        <tr>
+            <th>ID Booking</th>
+            <th>Member</th>
+            <th>Lapangan</th>
+            <th>Tanggal &amp; Jam</th>
+            <th>Total Harga</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="b : ${daftarBooking}">
+            <td th:text="${b.idBooking}">1</td>
+            <td th:text="${b.member.nama}">Nama Member</td>
+            <td th:text="${b.jadwal.lapangan.nama}">Nama Lapangan</td>
+            <td th:text="${b.jadwal.tanggal} + ' • ' + ${b.jadwal.jamMulai} + '-' + ${b.jadwal.jamSelesai}">Jadwal</td>
+            <td>Rp <span th:text="${b.totalHarga}">0</span></td>
+            <td>
+                <span class="badge"
+                      th:classappend="${b.status == 'Dikonfirmasi'} ? 'badge-dikonfirmasi' : (${b.status == 'Pending'} ? 'badge-pending' : 'badge-ditolak')"
+                      th:text="${b.status}">Status</span>
+            </td>
+            <td>
+                <div th:if="${b.status == 'Pending'}">
+                    <form class="inline" th:action="@{/booking/konfirmasi/{id}(id=${b.idBooking})}" method="post">
+                        <button class="btn btn-success" type="submit">Konfirmasi</button>
+                    </form>
+                    <form class="inline" th:action="@{/booking/tolak/{id}(id=${b.idBooking})}" method="post">
+                        <button class="btn btn-danger" type="submit">Tolak</button>
+                    </form>
+                </div>
+                <a class="btn btn-primary" th:href="@{/booking/{id}(id=${b.idBooking})}">Detail</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(daftarBooking)}">
+        <p>Belum ada data booking.</p>
+    </div>
+</div>
+
+</body>
+</html>

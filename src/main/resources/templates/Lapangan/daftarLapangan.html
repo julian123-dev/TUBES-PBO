@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jadwal Lapangan - SportSync</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .jadwal-container { max-width: 700px; margin: 30px auto; }
+        .lapangan-info { background: #0b1f3a; color: white; padding: 20px 24px; border-radius: 12px; margin-bottom: 24px; }
+        .lapangan-info h2 { margin: 0 0 6px; }
+        .lapangan-info p { margin: 4px 0; font-size: 14px; opacity: 0.85; }
+        .tanggal-picker { display: flex; align-items: center; gap: 12px; margin: 0; }
+        .tanggal-picker input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .tanggal-picker button { padding: 8px 16px; background: #0b1f3a; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .slot-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; }
+        .slot-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-radius: 10px; background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .slot-jam { font-weight: 600; font-size: 16px; color: #0b1f3a; }
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+        .badge-tersedia { background: #e8f5e9; color: #2e7d32; }
+        .badge-terpesan { background: #ffebee; color: #c62828; }
+        .btn-sm { padding: 6px 14px; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; font-weight: 600; text-decoration: none; }
+        .btn-reset { background: #fff3e0; color: #e65100; }
+        .btn-bayar { background: #e8f5e9; color: #2e7d32; }
+        .form-booking { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-top: 20px; }
+        .form-booking h3 { margin-top: 0; color: #0b1f3a; }
+        .slot-checkbox { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #f9f9f9; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; }
+        .slot-checkbox:hover { background: #e8f5e9; border-color: #2e7d32; }
+        .slot-checkbox input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: #0b1f3a; }
+        .slot-checkbox label { cursor: pointer; font-size: 15px; font-weight: 500; color: #0b1f3a; }
+        .btn-pesan { background: #0b1f3a; color: white; padding: 10px 24px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; margin-top: 16px; }
+        .btn-pesan:hover { background: #1a3a6b; }
+        .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+        .alert-success { background: #e8f5e9; color: #2e7d32; }
+        .alert-error { background: #ffebee; color: #c62828; }
+        .kosong-info { color: #888; font-size: 14px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="jadwal-container">
+
+    <div class="lapangan-info">
+        <h2 th:text="${lapangan.nama}"></h2>
+        <p th:text="${lapangan.jenis} + ' • ' + ${lapangan.lokasi}"></p>
+        <p th:text="'Rp ' + ${#numbers.formatInteger(lapangan.hargaPerJam, 1, 'COMMA')} + ' /jam'"></p>
+    </div>
+
+    <div class="alert alert-success" th:if="${param.success}">Booking berhasil!</div>
+    <div class="alert alert-success" th:if="${param.success == 'reset'}">Semua booking berhasil direset!</div>
+    <div class="alert alert-error" th:if="${param.error}">Slot sudah terpesan, pilih jam lain.</div>
+
+    <!-- Tanggal Picker + Tombol Reset & Bayar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <form method="get" class="tanggal-picker">
+            <label>Pilih Tanggal:</label>
+            <input type="date" name="tanggal" th:value="${tanggal}"/>
+            <button type="submit">Cari</button>
+        </form>
+
+        <div style="display: flex; gap: 8px;" th:if="${daftarBooking != null and !daftarBooking.isEmpty()}">
+            <form th:action="@{/jadwal/reset}" method="post" style="margin:0;"
+                  onsubmit="return confirm('Reset semua booking di tanggal ini?')">
+                <input type="hidden" name="idLapangan" th:value="${lapangan.idLapangan}"/>
+                <input type="hidden" name="tanggal" th:value="${tanggal}"/>
+                <button type="submit" class="btn-sm btn-reset">Reset Booking</button>
+            </form>
+            <a class="btn-sm btn-bayar"
+               th:href="@{/pembayaran(idBooking=${daftarBooking[0].idBooking})}">
+                Lanjut Bayar →
+            </a>
+        </div>
+    </div>
+
+    <!-- List Slot -->
+    <div class="slot-list">
+        <div class="slot-item" th:each="jadwal : ${daftarJadwal}">
+            <span class="slot-jam" th:text="${jadwal.jamMulai} + ' - ' + ${jadwal.jamSelesai}"></span>
+            <span th:if="${jadwal.isAvailable}" class="badge badge-tersedia">Tersedia</span>
+            <span th:if="${!jadwal.isAvailable}" class="badge badge-terpesan">Terpesan</span>
+        </div>
+    </div>
+
+    <!-- Form Booking -->
+    <div class="form-booking">
+        <h3>Buat Booking</h3>
+        <form th:action="@{/jadwal/booking}" method="post">
+            <input type="hidden" name="idLapangan" th:value="${lapangan.idLapangan}"/>
+            <label style="font-weight: bold; font-size: 14px;">Pilih Slot Jam:</label>
+            <div style="margin: 10px 0 20px; display: flex; flex-direction: column; gap: 8px;">
+                <div th:each="jadwal : ${daftarJadwal}" th:if="${jadwal.isAvailable}"
+                     class="slot-checkbox">
+                    <input type="checkbox" name="idJadwal"
+                           th:value="${jadwal.idJadwal}"
+                           th:id="'slot-' + ${jadwal.idJadwal}">
+                    <label th:for="'slot-' + ${jadwal.idJadwal}"
+                           th:text="${jadwal.jamMulai} + ' - ' + ${jadwal.jamSelesai}">
+                    </label>
+                </div>
+                <p class="kosong-info" th:if="${#lists.isEmpty(daftarJadwal)}">
+                    Tidak ada slot tersedia.
+                </p>
+            </div>
+            <button type="submit" class="btn-pesan">Pesan →</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
