@@ -71,7 +71,7 @@ public class PembayaranController {
 
         pembayaranService.hapusPembayaran(id);
 
-        return "redirect:/";
+        return "redirect:/pembayaran";
     }
 
     @GetMapping("/history/edit/{id}")
@@ -91,7 +91,7 @@ public class PembayaranController {
 
         historyService.updateHistory(id, history);
 
-        return "redirect:/";
+        return "redirect:/pembayaran";
     }
 
     @GetMapping("/history/hapus/{id}")
@@ -99,6 +99,6 @@ public class PembayaranController {
 
         historyService.hapusHistory(id);
 
-        return "redirect:/";
+        return "redirect:/pembayaran";
     }
 }
