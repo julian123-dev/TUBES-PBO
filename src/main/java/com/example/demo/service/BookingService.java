@@ -44,7 +44,6 @@ public class BookingService {
         return bookingRepository.findByJadwal_Lapangan_IdLapanganAndJadwal_Tanggal(idLapangan, tanggal);
     }
 
-    // Sekarang butuh idJadwal DAN memberId
     public Booking buatBooking(Integer idJadwal, Long memberId) {
 
         Jadwal jadwal = jadwalRepository.findById(idJadwal).orElse(null);

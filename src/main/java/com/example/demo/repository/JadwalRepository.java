@@ -12,6 +12,5 @@ import com.example.demo.entity.Lapangan;
 @Repository
 public interface JadwalRepository extends JpaRepository<Jadwal, Integer> {
 
-    // Sesuai pemanggilan di JadwalService: pakai objek Lapangan langsung, bukan Integer id
     List<Jadwal> findByLapanganAndTanggal(Lapangan lapangan, LocalDate tanggal);
 }

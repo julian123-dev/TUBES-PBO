@@ -103,7 +103,6 @@
             <div class="venue-body">
                 <div class="venue-label">Lapangan</div>
                 <div class="venue-name" th:text="${lapangan.nama}">Nama Lapangan</div>
-                <!-- ✅ PERBAIKAN: Hapus ${} di dalam ${} -->
                 <div class="venue-meta" th:text="${lapangan.jenis + ' • ' + lapangan.lokasi}">Jenis • Lokasi</div>
                 <div class="venue-price">Mulai <strong th:text="'Rp ' + ${#numbers.formatInteger(lapangan.hargaPerJam, 0, 'POINT')}">Rp 0</strong> /jam</div>
             </div>
@@ -114,7 +113,6 @@
                 <p th:text="'Jam: ' + ${lapangan.jamBuka} + ' - ' + ${lapangan.jamTutup}">Jam Operasional</p>
                 <p>Status: <span class="status-aktif" th:text="${lapangan.status}">Aktif</span></p>
                 
-                <!-- ✅ PERBAIKAN: lapangan.id → lapangan.idLapangan -->
                 <a class="btn-jadwal" th:href="@{/jadwal/{id}(id=${lapangan.idLapangan})}">Lihat Jadwal</a>
             </div>
         </div>

@@ -54,7 +54,6 @@ public class JadwalController {
         model.addAttribute("daftarBooking", daftarBooking);
         model.addAttribute("tanggal", tgl.toString());
 
-        // ✅ FIX UTAMA DI SINI
         return "daftarJadwal";
     }
 
