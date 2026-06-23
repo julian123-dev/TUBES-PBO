@@ -7,10 +7,9 @@ import com.example.demo.entity.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-
-    // Cari member berdasarkan email, dipakai untuk proses login
+    // Cari lewat email
     Optional<Member> findByEmail(String email);
 
-    // Cek apakah email sudah pernah dipakai, dipakai saat validasi registrasi
+    // Cek apa email dah dipake blm
     boolean existsByEmail(String email);
 }
